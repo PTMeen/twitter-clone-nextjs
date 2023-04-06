@@ -5,8 +5,12 @@ import { navLinks } from "@/constants/navigation";
 import Logo from "./Logo";
 import ThemeToggleBtn from "./ThemeToggleBtn";
 import TweetBtn from "./TweetBtn";
+import { useSession } from "next-auth/react";
+import LogoutBtn from "./LogoutBtn";
 
 function Sidebar() {
+  const { data: session } = useSession();
+
   return (
     <Box px={3}>
       <Box mb={5}>
@@ -19,10 +23,17 @@ function Sidebar() {
       </VStack>
       <Divider my={6} />
       <Box>
-        <ThemeToggleBtn />
-      </Box>
-      <Box mt={4}>
-        <TweetBtn />
+        <Box>
+          <ThemeToggleBtn />
+        </Box>
+        {session && (
+          <Box mt={4}>
+            <LogoutBtn />
+          </Box>
+        )}
+        <Box mt={8}>
+          <TweetBtn />
+        </Box>
       </Box>
     </Box>
   );

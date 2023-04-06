@@ -1,8 +1,10 @@
 import Header from "@/components/Header";
-import { Box, Button, useColorMode } from "@chakra-ui/react";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 function HomePage() {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { data, mutate } = useCurrentUser();
+  console.log(data);
+
   return (
     <>
       <Header title="Home" />

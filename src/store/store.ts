@@ -1,10 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import navigationDrawerReducer from "./features/navigationModalSlice";
+import navigationDrawerReducer from "./features/navigationDrawerSlice";
+import loginModalReducer from "./features/loginModalSlice";
+import registerModalReducer from "./features/registerModalSlice";
 
 export const store = configureStore({
   reducer: {
     navigationDrawer: navigationDrawerReducer,
+    loginModal: loginModalReducer,
+    registerModal: registerModalReducer,
   },
 });
 

@@ -16,11 +16,10 @@ interface Props {
 }
 
 function DefaultLayout({ children }: Props) {
-  const { colorMode } = useColorMode();
   const { lightDark } = useLightDark();
 
   return (
-    <Container maxW="7xl" h="100vh">
+    <Container maxW="7xl" h="100%">
       <Grid templateColumns="repeat(5, 1fr)">
         <GridItem py={4} colSpan={1} display={{ base: "none", md: "block" }}>
           <Sidebar />

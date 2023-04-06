@@ -4,8 +4,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { TiThMenuOutline } from "react-icons/ti";
 
 import useLightDark from "@/hooks/useLightDark";
-import { useAppDispatch } from "@/hooks/reduxHooks";
-import { onOpen } from "@/store/features/navigationModalSlice";
+import useNavigationDrawer from "@/hooks/useNavigationDrawer";
 
 interface Props {
   title: string;
@@ -14,10 +13,9 @@ interface Props {
 
 function Header({ title, showBackArrow = true }: Props) {
   const { lightDark } = useLightDark();
-  const dispatch = useAppDispatch();
+  const { open } = useNavigationDrawer();
 
   const router = useRouter();
-
   const goBack = () => router.back();
 
   return (
@@ -54,7 +52,7 @@ function Header({ title, showBackArrow = true }: Props) {
             aria-label="open menu"
             isRound
             _hover={{ color: lightDark("twitter.400", "twitter.600") }}
-            onClick={() => dispatch(onOpen())}
+            onClick={open}
           />
         </HStack>
       </HStack>

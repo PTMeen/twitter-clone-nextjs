@@ -12,16 +12,19 @@ import {
 } from "@chakra-ui/react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { onClose } from "@/store/features/navigationModalSlice";
+import { onClose } from "@/store/features/navigationDrawerSlice";
 import { navLinks } from "@/constants/navigation";
 import SidebarItem from "../SidebarItem";
 import Logo from "../Logo";
 import ThemeToggleBtn from "../ThemeToggleBtn";
 import TweetBtn from "../TweetBtn";
+import LogoutBtn from "../LogoutBtn";
+import { useSession } from "next-auth/react";
 
 function NavigationDrawer() {
   const { isOpen } = useAppSelector((state) => state.navigationDrawer);
   const dispatch = useAppDispatch();
+  const { data: session } = useSession();
 
   const closeDrawer = () => dispatch(onClose());
 
@@ -52,6 +55,11 @@ function NavigationDrawer() {
             <Box mb={3}>
               <ThemeToggleBtn />
             </Box>
+            {session && (
+              <Box mb={10}>
+                <LogoutBtn />
+              </Box>
+            )}
             <Box>
               <TweetBtn />
             </Box>
