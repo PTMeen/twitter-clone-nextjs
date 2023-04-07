@@ -20,10 +20,10 @@ function Header({ title, showBackArrow = true }: Props) {
 
   return (
     <Box
-      borderBottomWidth={1}
+      borderBottomWidth={{ base: 0, md: 1 }}
       borderBottomColor={lightDark("gray.200", "gray.700")}
       pb={4}
-      px={4}
+      px={{ base: 0, md: 4 }}
     >
       <HStack gap={3} alignItems="center">
         {showBackArrow && (

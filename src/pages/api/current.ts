@@ -17,28 +17,13 @@ const handler: NextApiHandler = async (req, res) => {
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: {
-      email: true,
-      username: true,
-      name: true,
-      bio: true,
-      posts: true,
-      comments: true,
-      followerIds: true,
-      followingIds: true,
-      profileImg: true,
-      coverImg: true,
-      createdAt: true,
-      hasNotification: true,
-      id: true,
-      notifications: true,
-    },
   });
 
   if (!user) {
     return res.status(200).json(null);
   }
 
+  user.password = "";
   return res.status(200).json(user);
 };
 export default handler;
