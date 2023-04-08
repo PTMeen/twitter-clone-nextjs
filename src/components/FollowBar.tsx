@@ -1,10 +1,29 @@
 import useUsers from "@/hooks/useUsers";
-import { Box, Card, CardHeader, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Card, Heading, Spinner } from "@chakra-ui/react";
 import FollowBarItem from "./FollowBarItem";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 function FollowBar() {
-  const { data: users = [], isLoading } = useUsers();
-  console.log({ users });
+  const { data = [], isLoading } = useUsers();
+  const { data: currentUser, isLoading: isCurrentUserLoading } =
+    useCurrentUser();
+  const users = data.filter((item) => item.id !== currentUser?.id);
+
+  if (isLoading || isCurrentUserLoading) {
+    return (
+      <Card
+        mx={1}
+        p={2}
+        minH={500}
+        shadow="md"
+        display="flex"
+        justify="center"
+        alignItems="center"
+      >
+        <Spinner color="twitter.500" size="xl" />
+      </Card>
+    );
+  }
 
   return (
     <Box px={4}>

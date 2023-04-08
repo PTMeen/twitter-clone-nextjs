@@ -1,4 +1,4 @@
-import { Box, Button, Divider, VStack } from "@chakra-ui/react";
+import { Box, Divider, VStack } from "@chakra-ui/react";
 
 import SidebarItem from "./SidebarItem";
 import { navLinks } from "@/constants/navigation";

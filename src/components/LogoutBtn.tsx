@@ -9,7 +9,7 @@ function LogoutBtn() {
       borderRadius="full"
       variant="outline"
       rightIcon={<FiLogOut />}
-      onClick={() => signOut()}
+      onClick={() => signOut({ callbackUrl: "/" })}
     >
       Logout
     </Button>

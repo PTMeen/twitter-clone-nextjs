@@ -9,6 +9,7 @@ import { store } from "@/store/store";
 import LoginModal from "@/components/modalAndDrawer/LoginModal";
 import RegisterModal from "@/components/modalAndDrawer/RegisterModal";
 import { SessionProvider } from "next-auth/react";
+import EditProfileModal from "@/components/modalAndDrawer/EditProfileModal";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <NavigationDrawer />
           <LoginModal />
           <RegisterModal />
+          <EditProfileModal />
           <DefaultLayout>
             <Component {...pageProps} />
           </DefaultLayout>

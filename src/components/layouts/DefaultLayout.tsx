@@ -20,7 +20,7 @@ function DefaultLayout({ children }: Props) {
 
   return (
     <Container maxW="7xl" h="100%">
-      <Grid templateColumns="repeat(5, 1fr)">
+      <Grid templateColumns="repeat(5, 1fr)" gap={2}>
         <GridItem py={4} colSpan={1} display={{ base: "none", md: "block" }}>
           <Sidebar />
         </GridItem>

@@ -95,6 +95,7 @@ function LoginModal() {
           <FormControl my={3} isRequired>
             <FormLabel>Email </FormLabel>
             <Input
+              autoFocus
               name="email"
               type="email"
               value={formData.email}

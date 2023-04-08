@@ -1,24 +1,35 @@
 import { HStack, Icon, Text } from "@chakra-ui/react";
-import NextLink from "next/link";
 import { IconType } from "react-icons";
 
 import useLightDark from "@/hooks/useLightDark";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import useLoginModal from "@/hooks/useLoginModal";
 
 interface Props {
-  href?: string;
+  href: string;
   label: string;
   icon: IconType;
-  onClick?: () => void;
+  auth?: boolean;
 }
 
-function SidebarItem({ href, icon, label, onClick }: Props) {
+function SidebarItem({ href, icon, label, auth }: Props) {
   const { lightDark } = useLightDark();
+  const { status } = useSession();
+  const loginModal = useLoginModal();
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (auth && status !== "authenticated") {
+      return loginModal.open();
+    }
+
+    router.push(href);
+  };
 
   return (
     <HStack
-      key={href}
-      as={NextLink}
-      href={href}
+      onClick={handleClick}
       gap={2}
       w="full"
       py={2}
@@ -27,7 +38,6 @@ function SidebarItem({ href, icon, label, onClick }: Props) {
         borderRadius: "md",
         cursor: "pointer",
       }}
-      onClick={onClick}
     >
       <Icon fontSize="xl" as={icon} />
       <Text>{label}</Text>

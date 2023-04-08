@@ -6,6 +6,7 @@ export type NavLink = {
   label: string;
   href: string;
   icon: IconType;
+  auth?: boolean;
 };
 
 export const navLinks: NavLink[] = [
@@ -18,10 +19,12 @@ export const navLinks: NavLink[] = [
     label: "Profile",
     href: "/profile",
     icon: BiUser,
+    auth: true,
   },
   {
     label: "Notifications",
     href: "/notifications",
     icon: MdOutlineNotifications,
+    auth: true,
   },
 ];

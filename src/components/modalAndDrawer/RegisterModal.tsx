@@ -119,6 +119,7 @@ function RegisterModal() {
             <FormControl isRequired>
               <FormLabel>Email </FormLabel>
               <Input
+                autoFocus
                 id="email"
                 name="email"
                 type="email"

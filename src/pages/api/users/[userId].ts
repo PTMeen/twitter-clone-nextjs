@@ -18,7 +18,7 @@ const handler: NextApiHandler = async (req, res) => {
       }
 
       user.password = "";
-      return res.status(200).json(user);
+      return res.status(200).json([user]);
     } catch (error) {
       return res.status(500).json({ msg: "Something went wrong" });
     }

@@ -1,31 +1,30 @@
-import {
-  Box,
-  Avatar,
-  Button,
-  chakra,
-  Heading,
-  Text,
-  HStack,
-} from "@chakra-ui/react";
 import Image from "next/image";
+import { Box, Avatar, chakra, Heading, Text, HStack } from "@chakra-ui/react";
 import { BsCalendarEvent } from "react-icons/bs";
 import { formatDistanceToNowStrict } from "date-fns";
+import { User } from "@prisma/client";
 
 import useLightDark from "@/hooks/useLightDark";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { useRouter } from "next/router";
+import useEditProfileModal from "@/hooks/useEditProfileModal";
 
-function Bio() {
+interface Props {
+  user: User;
+  isMyProfile?: boolean;
+}
+
+function Bio({ user, isMyProfile }: Props) {
   const { lightDark } = useLightDark();
-  const { data: currentUser } = useCurrentUser();
-  const router = useRouter();
+  const editProfileModal = useEditProfileModal();
 
-  if (!currentUser) {
-    router.back();
-    return null;
-  }
+  const joinedDate =
+    formatDistanceToNowStrict(new Date(user.createdAt)) + " " + "ago";
 
-  const joinedDate = formatDistanceToNowStrict(new Date(currentUser.createdAt));
+  const handleClick = () => {
+    if (isMyProfile) {
+      return editProfileModal.open();
+    }
+  };
 
   return (
     <Box>
@@ -34,6 +33,7 @@ function Bio() {
         bgColor={lightDark("gray.300", "gray.700")}
         position="relative"
       >
+        {user?.coverImg && <Image src={user.coverImg} alt="" fill />}
         <Avatar
           pos="absolute"
           left={5}
@@ -41,7 +41,7 @@ function Bio() {
           mb="-50px"
           size="2xl"
           name="Meen"
-          src={"/default-avatar.jpg"}
+          src={user?.profileImg || "/default-avatar.jpg"}
           borderWidth={3}
         />
         <chakra.button
@@ -57,21 +57,22 @@ function Bio() {
           _hover={{
             bgColor: "gray.500",
           }}
+          onClick={handleClick}
         >
-          EDIT
+          {isMyProfile ? "EDIT" : "FOLLOW"}
         </chakra.button>
       </Box>
 
       <Box mt={20} px={5}>
         <Box mb={6}>
           <Heading as="h1" size="xl">
-            {currentUser?.name}
+            {user?.name}
           </Heading>
-          <Text fontSize="sm">@{currentUser?.username}</Text>
+          <Text fontSize="sm">@{user?.username}</Text>
         </Box>
-        {currentUser.bio && (
-          <Box>
-            <Text>Bio goes here</Text>
+        {user.bio && (
+          <Box mb={6}>
+            <Text>{user.bio}</Text>
           </Box>
         )}
         <HStack gap={4}>
@@ -79,8 +80,8 @@ function Bio() {
             <BsCalendarEvent />
             <Text>Joined {joinedDate}</Text>
           </HStack>
-          <Text>{currentUser.followingIds.length} followings</Text>
-          <Text>{currentUser.followerIds.length} followers</Text>
+          <Text>{user.followingIds.length} followings</Text>
+          <Text>{user.followerIds.length} followers</Text>
         </HStack>
       </Box>
     </Box>
