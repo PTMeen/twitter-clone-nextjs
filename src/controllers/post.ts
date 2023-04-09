@@ -53,6 +53,9 @@ const getAllPost = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         comments: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return res.status(200).json(posts);
   } catch (error) {
@@ -62,4 +65,36 @@ const getAllPost = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const getPostById = async (req: NextApiRequest, res: NextApiResponse) => {};
 
-export { createPost, getAllPost, getPostById };
+const getUserPosts = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { userId } = req.query;
+
+  try {
+    if (!req.query.userId || typeof userId !== "string") {
+      return res.status(400).json({ msg: "Invalid user ID" });
+    }
+
+    const posts = await prisma.post.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            profileImg: true,
+          },
+        },
+        comments: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json(posts);
+  } catch (error) {}
+};
+
+export { createPost, getAllPost, getPostById, getUserPosts };

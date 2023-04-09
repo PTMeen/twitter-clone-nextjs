@@ -4,9 +4,12 @@ import Header from "@/components/Header";
 import PageSpinner from "@/components/PageSpinner";
 import Bio from "@/components/profile/Bio";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import PostFeed from "@/components/post/PostFeed";
+import useUserPosts from "@/hooks/useUserPosts";
 
 function profile() {
   const { data: currentUser, isLoading, error } = useCurrentUser();
+  const { data: myPosts = [] } = useUserPosts(currentUser?.id || "");
 
   if (isLoading) {
     return <PageSpinner />;
@@ -24,6 +27,9 @@ function profile() {
     <>
       <Header title="Profile" />
       <Bio user={currentUser!} isMyProfile />
+      <Box mt={8}>
+        <PostFeed posts={myPosts} />
+      </Box>
     </>
   );
 }

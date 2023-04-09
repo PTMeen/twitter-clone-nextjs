@@ -1,11 +1,13 @@
 import usePosts from "@/hooks/usePosts";
 import { Box, StackDivider, Text, VStack, Stack } from "@chakra-ui/react";
 import PostItem from "./PostItem";
+import { PostItem as PostItemType } from "@/types/post";
 
-function PostFeed() {
-  const { data: posts = [], isLoading } = usePosts();
-  console.log(posts);
+interface Props {
+  posts: PostItemType[];
+}
 
+function PostFeed({ posts }: Props) {
   return (
     <Box px={3} mt={6}>
       <Stack direction="column" spacing={6} divider={<StackDivider />}>

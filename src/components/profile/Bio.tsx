@@ -27,7 +27,7 @@ function Bio({ user, isMyProfile }: Props) {
   };
 
   return (
-    <Box>
+    <Box borderBottomWidth={1} pb={4}>
       <Box
         h={200}
         bgColor={lightDark("gray.300", "gray.700")}
