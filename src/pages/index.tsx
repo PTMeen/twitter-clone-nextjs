@@ -1,13 +1,14 @@
+import Form from "@/components/Form";
 import Header from "@/components/Header";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import PostFeed from "@/components/post/PostFeed";
+import { Box } from "@chakra-ui/react";
 
 function HomePage() {
-  const { data, mutate } = useCurrentUser();
-  console.log(data);
-
   return (
     <>
-      <Header title="Home" />
+      <Header title="Home" showBackArrow={false} />
+      <Form />
+      <PostFeed />
     </>
   );
 }

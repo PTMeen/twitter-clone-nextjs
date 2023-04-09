@@ -27,7 +27,7 @@ function FollowBar() {
 
   return (
     <Box px={4}>
-      <Card mx={1} p={2} minH={500} shadow="md">
+      <Card mx={1} p={2} minH={500}>
         <Box display="flex" flexDir="column" justifyContent="stretch">
           <Box mb={6}>
             <Heading as="h2" size="md" textAlign="left">

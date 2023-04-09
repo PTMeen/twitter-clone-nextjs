@@ -6,6 +6,7 @@ import {
   Stack,
   useColorMode,
 } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 import { ReactNode } from "react";
 import Sidebar from "../Sidebar";
 import FollowBar from "../FollowBar";
@@ -31,6 +32,7 @@ function DefaultLayout({ children }: Props) {
           borderColor={lightDark("gray.200", "gray.700")}
           borderWidth={{ base: 0, md: 1 }}
           borderY="none"
+          bgColor={lightDark("gray.50", "gray.800")}
         >
           {children}
         </GridItem>
