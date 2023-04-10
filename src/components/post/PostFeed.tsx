@@ -9,7 +9,7 @@ interface Props {
 
 function PostFeed({ posts }: Props) {
   return (
-    <Box px={3} mt={6}>
+    <Box mt={6}>
       <Stack direction="column" spacing={6} divider={<StackDivider />}>
         {posts.map((post) => (
           <PostItem key={post.id} post={post} />

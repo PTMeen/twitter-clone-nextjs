@@ -55,7 +55,7 @@ function Form({ isComment }: Props) {
   if (!currentUser) return null;
 
   return (
-    <Box borderBottomWidth={1} borderRadius="none" p={6}>
+    <Box borderBottomWidth={1} borderRadius="none" p={4}>
       <HStack gap={3}>
         <Avatar
           size="lg"
@@ -88,6 +88,7 @@ function Form({ isComment }: Props) {
           {content.length} / 300
         </Text>
         <Textarea
+          id="tweet-textarea"
           borderRadius="md"
           variant="filled"
           focusBorderColor={lightDark("twitter.300", "twitter.800")}

@@ -7,7 +7,7 @@ import useLightDark from "@/hooks/useLightDark";
 import useNavigationDrawer from "@/hooks/useNavigationDrawer";
 
 interface Props {
-  title: string;
+  title?: string;
   showBackArrow?: boolean;
 }
 
@@ -37,9 +37,11 @@ function Header({ title, showBackArrow = true }: Props) {
             />
           </Box>
         )}
-        <Heading as="h1" size="lg">
-          {title}
-        </Heading>
+        {!!title && (
+          <Heading as="h1" size="lg">
+            {title}
+          </Heading>
+        )}
         <HStack
           flexGrow={1}
           justifyContent="end"

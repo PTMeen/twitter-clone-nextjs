@@ -13,7 +13,13 @@ function TweetBtn() {
   const handleClick = () => {
     if (!session) {
       loginModal.open();
+      return;
     }
+
+    const tweetTextArea = document.getElementById("tweet-textarea")!;
+    tweetTextArea.scrollIntoView({ behavior: "smooth" });
+    tweetTextArea.focus();
+
     navigationDrawer.close();
   };
 

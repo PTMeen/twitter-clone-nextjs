@@ -26,6 +26,7 @@ function DefaultLayout({ children }: Props) {
           <Sidebar />
         </GridItem>
         <GridItem
+          className=""
           py={4}
           colSpan={{ base: 5, md: 3 }}
           h="100vh"
@@ -33,6 +34,12 @@ function DefaultLayout({ children }: Props) {
           borderWidth={{ base: 0, md: 1 }}
           borderY="none"
           bgColor={lightDark("gray.50", "gray.800")}
+          overflowY="scroll"
+          sx={{
+            "::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
         >
           {children}
         </GridItem>

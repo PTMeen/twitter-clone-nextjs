@@ -1,5 +1,4 @@
 import { MouseEvent } from "react";
-import Link from "next/link";
 import { Avatar, Box, Button, HStack, Text } from "@chakra-ui/react";
 import { formatDistanceToNowStrict } from "date-fns";
 import { FaRegComment } from "react-icons/fa";
@@ -28,7 +27,7 @@ function PostItem({ post }: Props) {
   const postedAt = formatDistanceToNowStrict(new Date(post.createdAt));
 
   return (
-    <Box onClick={goToSinglePostpage} cursor="pointer">
+    <Box px={3} onClick={goToSinglePostpage} cursor="pointer">
       <HStack align="start">
         <Avatar
           cursor="pointer"

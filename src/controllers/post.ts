@@ -63,7 +63,49 @@ const getAllPost = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const getPostById = async (req: NextApiRequest, res: NextApiResponse) => {};
+const getPostById = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { postId } = req.query;
+
+  if (!postId || typeof postId !== "string") {
+    return res.status(400).json({ msg: "Invalid post ID" });
+  }
+
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        comments: {
+          include: {
+            user: {
+              select: {
+                username: true,
+                name: true,
+                id: true,
+                profileImg: true,
+              },
+            },
+          },
+        },
+        user: {
+          select: {
+            username: true,
+            name: true,
+            id: true,
+            profileImg: true,
+          },
+        },
+      },
+    });
+
+    if (!post) {
+      return res.status(404).json({ msg: "Post not found" });
+    }
+
+    return res.status(200).json(post);
+  } catch (error) {
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
 
 const getUserPosts = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = req.query;
