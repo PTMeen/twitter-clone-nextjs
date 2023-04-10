@@ -3,52 +3,28 @@ import { Box, Avatar, chakra, Heading, Text, HStack } from "@chakra-ui/react";
 import { BsCalendarEvent } from "react-icons/bs";
 import { formatDistanceToNowStrict } from "date-fns";
 import { User } from "@prisma/client";
-import axios from "axios";
 import { KeyedMutator } from "swr";
 
 import useLightDark from "@/hooks/useLightDark";
-import useCurrentUser from "@/hooks/useCurrentUser";
 import useEditProfileModal from "@/hooks/useEditProfileModal";
-import useMyToast from "@/hooks/useMyToast";
-import useUsers from "@/hooks/useUsers";
+import useFollow from "@/hooks/useFollow";
 
 interface Props {
   user: User;
   isMyProfile?: boolean;
-  mutateUser?: KeyedMutator<any>;
 }
 
-function Bio({ user, isMyProfile, mutateUser }: Props) {
+function Bio({ user, isMyProfile }: Props) {
   const { lightDark } = useLightDark();
   const editProfileModal = useEditProfileModal();
-  const myToast = useMyToast();
-  const { data: currentUser } = useCurrentUser();
-  const { mutate: mutateUsers } = useUsers();
+
+  const { followUnfollow, isFollowing, isLoading } = useFollow(user.id);
 
   const joinedDate =
     formatDistanceToNowStrict(new Date(user.createdAt)) + " " + "ago";
 
   const editProfile = () => {
     editProfileModal.open();
-  };
-
-  const followUnFollow = () => {
-    const url = currentUser?.followingIds.includes(user.id)
-      ? "/api/unfollow"
-      : "/api/follow";
-
-    axios
-      .patch(url, { userId: user.id })
-      .then(() => {
-        if (mutateUser) {
-          mutateUser();
-        }
-        mutateUsers();
-        console.log("Yay!");
-      })
-      .catch((error) => {
-        myToast("Errror", "Something went wrong", "error");
-      });
   };
 
   return (
@@ -98,14 +74,16 @@ function Bio({ user, isMyProfile, mutateUser }: Props) {
             px={6}
             borderRadius={"full"}
             transition={"0.3s"}
+            _disabled={{
+              bgColor: lightDark("gray.500", "gray.600"),
+            }}
             _hover={{
               bgColor: "gray.500",
             }}
-            onClick={followUnFollow}
+            onClick={followUnfollow}
+            disabled={isLoading}
           >
-            {currentUser?.followingIds.includes(user.id)
-              ? "Unfollow"
-              : "Follow"}
+            {isLoading ? "Loading" : isFollowing ? "Unfollow" : "Follow"}
           </chakra.button>
         )}
       </Box>

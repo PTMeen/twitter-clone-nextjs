@@ -1,8 +1,7 @@
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
 
 import prisma from "@/lib/prismadb";
+import serverAuth from "@/lib/serverAuth";
 
 const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -12,24 +11,19 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).json({ msg: "Post content requried" });
     }
 
-    const session = await getServerSession(req, res, authOptions);
-
-    if (!session?.user?.email) {
+    const currentUser = await serverAuth(req, res);
+    if (!currentUser) {
       return res.status(401).json({ msg: "Unauthorized access" });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-    });
-
-    if (!user?.id) {
+    if (!currentUser.id) {
       return res.status(401).json({ msg: "Unauthorized access" });
     }
 
-    const newPost = await prisma.post.create({
+    await prisma.post.create({
       data: {
         content,
-        userId: user.id,
+        userId: currentUser.id,
       },
     });
 
@@ -141,19 +135,11 @@ const getUserPosts = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const likeUnlikePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const { postId } = req.body;
-  const session = await getServerSession(req, res, authOptions);
+  const currentUser = await serverAuth(req, res);
 
   if (!postId || typeof postId !== "string") {
     return res.status(400).json({ msg: "Post ID requried" });
   }
-
-  if (!session?.user?.email) {
-    return res.status(401).json({ msg: "Unauthorized access" });
-  }
-
-  const currentUser = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
 
   if (!currentUser) {
     return res.status(401).json({ msg: "Unauthorized access" });

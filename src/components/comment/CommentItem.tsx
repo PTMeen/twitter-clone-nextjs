@@ -1,5 +1,4 @@
 import { Avatar, Box, HStack, Text } from "@chakra-ui/react";
-import { Comment } from "@prisma/client";
 import { useRouter } from "next/router";
 import { MouseEvent } from "react";
 import { formatDistanceToNowStrict } from "date-fns";

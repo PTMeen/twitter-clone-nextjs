@@ -10,7 +10,7 @@ function UserPage() {
   const router = useRouter();
   const { userId } = router.query;
 
-  const { data, isLoading, mutate: mutateUser } = useUsers(userId as string);
+  const { data, isLoading } = useUsers(userId as string);
   const { data: userPosts = [] } = useUserPosts(userId as string);
 
   if (isLoading) {
@@ -22,7 +22,7 @@ function UserPage() {
   return (
     <>
       <Header showBackArrow title={user.name} />
-      <Bio user={user} mutateUser={mutateUser} />
+      <Bio user={user} />
       <PostFeed posts={userPosts} />
     </>
   );

@@ -93,7 +93,7 @@ function Form({ isComment }: Props) {
           variant="filled"
           focusBorderColor={lightDark("twitter.300", "twitter.800")}
           size="sm"
-          placeholder="Tweet something..."
+          placeholder="What's going on..."
           value={content}
           onChange={handleContentChange}
           disabled={isLoading}
