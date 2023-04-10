@@ -139,4 +139,51 @@ const getUserPosts = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error) {}
 };
 
-export { createPost, getAllPost, getPostById, getUserPosts };
+const likeUnlikePost = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { postId } = req.body;
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!postId || typeof postId !== "string") {
+    return res.status(400).json({ msg: "Post ID requried" });
+  }
+
+  if (!session?.user?.email) {
+    return res.status(401).json({ msg: "Unauthorized access" });
+  }
+
+  const currentUser = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+
+  if (!currentUser) {
+    return res.status(401).json({ msg: "Unauthorized access" });
+  }
+
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    const likeIds = post?.likeIds || [];
+    let updatedLikeIds: string[] = [];
+
+    if (likeIds.includes(currentUser.id)) {
+      updatedLikeIds = likeIds.filter((item) => item !== currentUser.id);
+    } else {
+      updatedLikeIds.push(currentUser.id);
+    }
+
+    await prisma.post.update({
+      where: { id: postId },
+      data: {
+        likeIds: updatedLikeIds,
+      },
+    });
+
+    return res.status(200).end();
+  } catch (error) {
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
+
+export { createPost, getAllPost, getPostById, getUserPosts, likeUnlikePost };
