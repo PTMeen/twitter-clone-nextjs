@@ -1,4 +1,4 @@
-import CommentForm from "@/components/CommentForm";
+import CommentForm from "@/components/comment/CommentForm";
 import Header from "@/components/Header";
 import PageSpinner from "@/components/PageSpinner";
 import CommentsFeed from "@/components/comment/CommentsFeed";

@@ -11,14 +11,26 @@ const follow = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const currentUser = await serverAuth(req, res);
+  if (!currentUser) {
+    return res.status(401).json({ msg: "Unauthorized Access" });
+  }
 
   try {
+    await prisma.notification.create({
+      data: {
+        type: "FOLLOWED",
+        userId: currentUser.id,
+        receiver: userId,
+      },
+    });
+
     await prisma.user.update({
       where: { id: userId },
       data: {
         followerIds: {
           push: currentUser?.id,
         },
+        hasNotification: true,
       },
     });
     await prisma.user.update({
@@ -57,6 +69,14 @@ const unFollow = async (req: NextApiRequest, res: NextApiResponse) => {
     const updatedFollowerIds = followerIds.filter(
       (id) => id !== currentUser?.id
     );
+
+    await prisma.notification.create({
+      data: {
+        userId: currentUser.id,
+        receiver: userId,
+        type: "UNFOLLOWED",
+      },
+    });
 
     await prisma.user.update({
       where: { id: currentUser.id },

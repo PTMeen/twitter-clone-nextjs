@@ -1,9 +1,5 @@
-import { Post, User, Comment } from "@prisma/client";
-
-export type UserThumbnail = Pick<
-  User,
-  "username" | "name" | "id" | "profileImg"
->;
+import { Post, Comment } from "@prisma/client";
+import { UserThumbnail } from "./user";
 
 export type PostItem = Post & {
   user: UserThumbnail;

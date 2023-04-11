@@ -53,9 +53,18 @@ model Comment {
 }
 
 model Notification {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
-  userId    String   @db.ObjectId
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String           @db.ObjectId
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  receiver  String           @db.ObjectId
+}
+
+enum NotificationType {
+  LIKED
+  UNLIKED
+  FOLLOWED
+  UNFOLLOWED
+  NEWPOST
 }

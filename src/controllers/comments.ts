@@ -13,7 +13,7 @@ export const createComment = async (
   }
 
   try {
-    const newComment = await prisma.comment.create({
+    await prisma.comment.create({
       data: { content, userId, postId },
     });
     return res.status(201).json({ msg: "New comment created" });

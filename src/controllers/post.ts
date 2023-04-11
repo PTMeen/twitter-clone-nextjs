@@ -150,13 +150,31 @@ const likeUnlikePost = async (req: NextApiRequest, res: NextApiResponse) => {
       where: { id: postId },
     });
 
+    if (!post) {
+      return res.status(404).json({ msg: "Post not found" });
+    }
+
     const likeIds = post?.likeIds || [];
     let updatedLikeIds: string[] = [];
 
     if (likeIds.includes(currentUser.id)) {
       updatedLikeIds = likeIds.filter((item) => item !== currentUser.id);
+      await prisma.notification.create({
+        data: {
+          userId: currentUser.id,
+          receiver: post.userId,
+          type: "UNLIKED",
+        },
+      });
     } else {
       updatedLikeIds.push(currentUser.id);
+      await prisma.notification.create({
+        data: {
+          userId: currentUser.id,
+          receiver: post.userId,
+          type: "LIKED",
+        },
+      });
     }
 
     await prisma.post.update({
